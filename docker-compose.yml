@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  mysql:
+    image: mysql:5.7
+    restart: always
+    volumes:
+        - mysql_db_data01:/var/lib/mysl
+        - log_mysql:/var/log
+    environment:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+  ghost-cms:
+    depends_on:
+        - mysql
+    build: ./ghost-cms
+    restart: always
+    ports:
+        - "2368:2368"
+    environment:
+        NODE_ENV: ${NODE_ENV}
+
+volumes :
+    mysql_db_data01: {}
+    log_mysql: {}
